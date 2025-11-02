@@ -10,20 +10,19 @@ export async function POST(req) {
       });
     }
 
-    // ✅ Use STARTTLS on port 587 instead of SSL (465)
+    // Create transporter using Gmail
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false, // use TLS
+      service: "gmail",
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
     });
 
+    // Email content
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER, // send to yourself
       subject: `📩 New Contact Message from ${name}`,
       text: `
 Name: ${name}
@@ -42,6 +41,6 @@ ${message}
     return new Response(JSON.stringify({ success: true, message: "Email sent!" }), { status: 200 });
   } catch (error) {
     console.error("❌ Email send error:", error);
-    return new Response(JSON.stringify({ error: error.message || "Failed to send email" }), { status: 500 });
+    return new Response(JSON.stringify({ error: "Failed to send email" }), { status: 500 });
   }
 }
