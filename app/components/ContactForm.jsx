@@ -14,6 +14,7 @@ export default function ContactForm() {
     setStatus("Sending...");
 
     try {
+      // 👇 Sending data to backend API
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
